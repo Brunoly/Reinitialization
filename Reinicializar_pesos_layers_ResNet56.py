@@ -16,7 +16,7 @@ from datetime import datetime
 from tensorflow.keras.optimizers import SGD
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from sklearn.metrics._classification import accuracy_score
-
+from time import time
 
 # TODO depois testar somente reinicializando camadas "principais" dentro de blocos.
 
@@ -340,13 +340,17 @@ if __name__ == "__main__":
     parser.add_argument('--p_reinitialized', type=float, default=0)
     parser.add_argument('--name', type=str, default='')
     parser.add_argument('--seed_value', type=int, default='')
+    parser.add_argument('--timeit', action='store_true', help='times the execution time')
+
     args = parser.parse_args()
     criterion_layer = args.criterion_layer
     p_reinitialized = args.p_reinitialized
     name = args.name
     seed_value = args.seed_value
     
-
+    if args.timeit:
+        start_time = time()
+    
     #physical_devices = tf.config.list_physical_devices('GPU')
     #tf.config.experimental.set_memory_growth(physical_devices[0], True) 
     
@@ -450,3 +454,5 @@ if __name__ == "__main__":
     with open(filename, 'w') as f:
         json.dump(full_data, f, indent=4)
 
+    if args.timeit:
+        print(f"time(s)  :   {time()- start_time}")
