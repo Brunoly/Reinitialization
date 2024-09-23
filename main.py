@@ -1,7 +1,7 @@
 import argparse
 import numpy as np
-from Reinitialization.layer_masks import layer_to_reinitizalize
-from Reinitialization.score_functions import random_score, last_layer
+from layer_masks import layer_to_reinitizalize
+from score_functions import random_score, last_layer
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -15,7 +15,7 @@ from resnet import resnet20, resnet32, resnet44, resnet56, resnet110
 
 def parse_args():
 
-    parser = argparse.ArgumenstParser(description='Train ResNet models on CIFAR-10')
+    parser = argparse.ArgumentParser(description='Train ResNet models on CIFAR-10')
     parser.add_argument('--initial_lr', type=float, default=0.1, help='Initial learning rate')
     parser.add_argument('--model_name', type=str, default='resnet20', help='Model name (e.g., resnet20, resnet32)')
     parser.add_argument('--n_epochs', type=int, default=200, help='Number of training epochs')

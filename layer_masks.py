@@ -1,7 +1,7 @@
 import torch
 from torch import nn
 import re
-from Reinitialization.score_functions import random_score
+from score_functions import random_score
 
 
 def resnet_mask(model, p_reinitialized= .5, score_function=random_score):
