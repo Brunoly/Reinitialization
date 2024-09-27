@@ -38,7 +38,7 @@ def plot_metrics(history, save_path):
     plt.close()
 
 def process_folders():
-    root_folder = './folder'
+    root_folder = './modelos'
     for model_folder in os.listdir(root_folder):
         model_path = os.path.join(root_folder, model_folder)
         if os.path.isdir(model_path):

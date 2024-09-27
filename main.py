@@ -22,7 +22,7 @@ def parse_args():
     parser.add_argument('--n_epochs', type=int, default=200, help='Number of training epochs')
     parser.add_argument('--batch_size', type=int, default=128, help='Batch size for training')
     parser.add_argument('--weight_decay', type=float, default=1e-4, help='Weight decay for optimizer')
-    parser.add_argument('--reinitilization_epochs', nargs='+', type=int, default=[999**999],
+    parser.add_argument('--reinitilization_epochs', nargs='+', type=int, default=[None],
                         help='Epochs in which reinitilization happens')
     parser.add_argument('--p_reinitialized', type=float, default=0)
     parser.add_argument('--criterion_layer', type=str, default='random')
@@ -151,7 +151,7 @@ def train_resnets():
     scheduler = LambdaLR(optimizer, lr_lambda=lr_schedule, last_epoch=args.start_epoch - 1)
 
     # Create folder structure to save models
-    parent_dir = './folder'
+    parent_dir = './modelos'
     timestamp = time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime())
     run_dir = os.path.join(parent_dir, f'{args.model_name}_lr{args.initial_lr}_epochs{args.n_epochs}_{timestamp}')
     
