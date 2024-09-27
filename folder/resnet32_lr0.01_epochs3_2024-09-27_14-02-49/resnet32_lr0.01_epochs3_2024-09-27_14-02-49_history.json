@@ -1,0 +1,41 @@
+{
+    "config": {
+        "initial_lr": 0.01,
+        "model_name": "resnet32",
+        "n_epochs": 3,
+        "batch_size": 64,
+        "weight_decay": 1e-05,
+        "reinitilization_epochs": [
+            100,
+            200
+        ],
+        "p_reinitialized": 0.5,
+        "criterion_layer": "last_layers",
+        "save_epochs": [],
+        "load_model": "",
+        "start_epoch": 0,
+        "seed": 123
+    },
+    "history": {
+        "train_loss": [
+            1.6767664326121434,
+            1.279452037780791,
+            1.0352963767088283
+        ],
+        "train_acc": [
+            38.252,
+            53.446,
+            63.054
+        ],
+        "test_acc": [
+            49.29,
+            56.19,
+            65.92
+        ],
+        "lr": [
+            0.01,
+            0.001,
+            0.0001
+        ]
+    }
+}

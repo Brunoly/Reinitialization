@@ -1,0 +1,46 @@
+{
+    "config": {
+        "initial_lr": 0.1,
+        "model_name": "resnet20",
+        "n_epochs": 3,
+        "batch_size": 128,
+        "weight_decay": 0.0001,
+        "reinitilization_epochs": [
+            2
+        ],
+        "p_reinitialized": 0.3,
+        "criterion_layer": "random",
+        "save_epochs": [
+            1
+        ],
+        "load_model": "",
+        "start_epoch": 0
+    },
+    "history": {
+        "train_loss": [
+            1.8877085663778397,
+            1.3697707875610312,
+            1.4251963918471275
+        ],
+        "train_acc": [
+            32.59,
+            49.682,
+            47.798
+        ],
+        "test_loss": [
+            1.5585469792160807,
+            1.293714927721627,
+            1.2477573865576634
+        ],
+        "test_acc": [
+            43.28,
+            52.59,
+            54.44
+        ],
+        "lr": [
+            0.010000000000000002,
+            0.010000000000000002,
+            0.001
+        ]
+    }
+}

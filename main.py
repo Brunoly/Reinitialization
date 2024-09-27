@@ -12,6 +12,7 @@ from torchsummary import summary
 import time
 import os
 from resnet import resnet20, resnet32, resnet44, resnet56, resnet110
+import json
 
 def parse_args():
 
@@ -30,6 +31,7 @@ def parse_args():
     parser.add_argument('--save_epochs', nargs='+', type=int, default=[], help='Epochs at which to save the model')
     parser.add_argument('--load_model', type=str, default='', help='Path to a saved model to load')
     parser.add_argument('--start_epoch', type=int, default=0, help='Epoch number to start training from')
+    parser.add_argument('--seed', type=int, default=42, help='')
 
     return parser.parse_args()
 
@@ -43,6 +45,14 @@ transform_train = transforms.Compose([
 transform_test = transforms.Compose([
     transforms.ToTensor()
 ])
+
+# Set random seed
+def set_seed(seed):
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
 
 def train(epoch, model, device, trainloader, optimizer, criterion):
     model.train()
@@ -91,6 +101,7 @@ def test(model, device, testloader, criterion):
 
 def train_resnets():
     args = parse_args()
+    set_seed(args.seed)
 
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
@@ -151,6 +162,14 @@ def train_resnets():
     print("Model Summary:")
     summary(model, input_size=(3, 32, 32))
 
+    # Training history
+    history = {
+        'train_loss': [],
+        'train_acc': [],
+        'test_acc': [],
+        'lr': []
+    }
+
     for epoch in range(args.start_epoch, args.n_epochs):
 
         if epoch in args.reinitilization_epochs:
@@ -176,8 +195,18 @@ def train_resnets():
 
         scheduler.step()
 
+        # Get current learning rate
+        current_lr = optimizer.param_groups[0]['lr']
+
+        history['train_loss'].append(train_loss)
+        history['train_acc'].append(train_acc)
+        history['test_acc'].append(test_acc)
+        history['lr'].append(current_lr)
+
         print(f"Epoch: {epoch + 1}/{args.n_epochs} | Train Acc: {train_acc:.2f}% | Test Acc: {test_acc:.2f}% | "
-              f"Train Loss: {train_loss:.4f} | Test Loss: {test_loss:.4f} | Epoch Time: {epoch_time:.2f}s | Test Time: {test_time:.2f}s")
+              f"Train Loss: {train_loss:.4f} | Test Loss: {test_loss:.4f} | "
+              f"Learning Rate: {current_lr:.6f} | "
+              f"Epoch Time: {epoch_time:.2f}s | Test Time: {test_time:.2f}s")
 
         # Save model at specified epochs
         if epoch in args.save_epochs:
@@ -188,6 +217,19 @@ def train_resnets():
     final_model_filename = os.path.join(run_dir, f'{args.model_name}_final_model.pth')
     print(f'Saved final model at: {final_model_filename}')
     torch.save(model.state_dict(), final_model_filename)
+
+    # Save the history and config to JSON
+    config = vars(args)
+    history_data = {
+        "config": config,
+        "history": history
+    }
+
+    json_filename = f"{args.model_name}_lr{args.initial_lr}_epochs{args.n_epochs}_{timestamp}_history.json"
+    json_path = os.path.join(run_dir, json_filename)
+    with open(json_path, 'w') as f:
+        json.dump(history_data, f, indent=4)
+    print(f"Training history saved to {json_path}") 
 
 def reinitialize_weights(model, layers_to_reinit):
     # TODO: Implement shrink and perturb if needed
