@@ -118,6 +118,7 @@ def train_resnets():
         'resnet56': resnet56(),
         'resnet110': resnet110()
     }
+    
     model = model_dict[args.model_name].to(device)
 
     # Load external model if provided
