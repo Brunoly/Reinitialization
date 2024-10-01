@@ -22,7 +22,7 @@ def parse_args():
     parser.add_argument('--n_epochs', type=int, default=200, help='Number of training epochs')
     parser.add_argument('--batch_size', type=int, default=128, help='Batch size for training')
     parser.add_argument('--weight_decay', type=float, default=1e-4, help='Weight decay for optimizer')
-    parser.add_argument('--reinitilization_epochs', nargs='+', type=int, default=[None],
+    parser.add_argument('--reinitilization_epochs', nargs='+', type=int, default=[-1],
                         help='Epochs in which reinitilization happens')
     parser.add_argument('--p_reinitialized', type=float, default=0)
     parser.add_argument('--criterion_layer', type=str, default='random')
@@ -45,6 +45,7 @@ transform_train = transforms.Compose([
 transform_test = transforms.Compose([
     transforms.ToTensor()
 ])
+
 
 # Set random seed
 def set_seed(seed):
