@@ -11,17 +11,14 @@ from torch.optim.lr_scheduler import LambdaLR
 from torchsummary import summary
 import time
 import os
+from torchvision.models import mobilenet_v2
 import json
-from torchvision import models
-from torchvision.models import vgg11, vgg13, vgg16, vgg19, vgg11_bn, vgg13_bn, vgg16_bn, vgg19_bn
-#TODO testar direito
 
 def parse_args():
-    parser = argparse.ArgumentParser(description='Train VGG models on CIFAR-10')
-    parser.add_argument('--initial_lr', type=float, default=0.01, help='Initial learning rate')
-    parser.add_argument('--model_name', type=str, default='vgg16', 
-                        choices=['vgg11', 'vgg13', 'vgg16', 'vgg19', 'vgg11_bn', 'vgg13_bn', 'vgg16_bn', 'vgg19_bn'],
-                        help='Model name (e.g., vgg16, vgg19_bn)')
+
+    parser = argparse.ArgumentParser(description='Train ResNet models on CIFAR-10')
+    parser.add_argument('--initial_lr', type=float, default=0.1, help='Initial learning rate')
+    parser.add_argument('--model_name', type=str, default='mobilenet_v2')
     parser.add_argument('--n_epochs', type=int, default=200, help='Number of training epochs')
     parser.add_argument('--batch_size', type=int, default=128, help='Batch size for training')
     parser.add_argument('--weight_decay', type=float, default=1e-4, help='Weight decay for optimizer')
@@ -38,22 +35,17 @@ def parse_args():
 
     return parser.parse_args()
 
-# Define CIFAR-10 mean and std for normalization
-cifar10_mean = (0.4914, 0.4822, 0.4465)
-cifar10_std = (0.2023, 0.1994, 0.2010)
-
 transform_train = transforms.Compose([
     transforms.RandomHorizontalFlip(),
     transforms.RandomRotation(15),
     transforms.RandomAffine(0, translate=(0.1, 0.1)),
-    transforms.ToTensor(),
-    transforms.Normalize(cifar10_mean, cifar10_std)
+    transforms.ToTensor()
 ])
 
 transform_test = transforms.Compose([
-    transforms.ToTensor(),
-    transforms.Normalize(cifar10_mean, cifar10_std)
+    transforms.ToTensor()
 ])
+
 
 # Set random seed
 def set_seed(seed):
@@ -108,7 +100,7 @@ def test(model, device, testloader, criterion):
     avg_test_loss = test_loss / len(testloader)
     return avg_test_loss, test_acc
 
-def train_vgg():
+def train_resnets():
     args = parse_args()
     set_seed(args.seed)
 
@@ -120,25 +112,10 @@ def train_vgg():
     testset = torchvision.datasets.CIFAR10(root='./data', train=False, download=True, transform=transform_test)
     testloader = torch.utils.data.DataLoader(testset, batch_size=args.batch_size, shuffle=False, num_workers=2)
 
-    # Create VGG model
-    model_dict = {
-        'vgg11': vgg11,
-        'vgg13': vgg13,
-        'vgg16': vgg16,
-        'vgg19': vgg19,
-        'vgg11_bn': vgg11_bn,
-        'vgg13_bn': vgg13_bn,
-        'vgg16_bn': vgg16_bn,
-        'vgg19_bn': vgg19_bn
-    }
-
-    model_name = args.model_name
-    if model_name in model_dict:
-        model = model_dict[model_name]()
-    else:
-        raise ValueError(f"Unknown model name: {model_name}")
     
+    model = mobilenet_v2(weights=None, num_classes=10)
     model = model.to(device)
+
 
     # Load external model if provided
     if args.load_model:
@@ -170,7 +147,7 @@ def train_vgg():
 
     scheduler = LambdaLR(optimizer, lr_lambda=lr_schedule, last_epoch=args.start_epoch - 1)
 
-    # Create folder structure to save models
+    # Create folder structure to save modelsb
     parent_dir = './modelos'
     timestamp = time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime())
     run_dir = os.path.join(parent_dir, f'{args.model_name}_lr{args.initial_lr}_epochs{args.n_epochs}_{timestamp}')
@@ -271,4 +248,4 @@ def reinitialize_weights(model, layers_to_reinit):
     return model
 
 if __name__ == '__main__':
-    train_vgg()
+    train_resnets()
