@@ -1,0 +1,270 @@
+/home/vm02/Desktop/raul/Reinitialization/main_vgg.py:144: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  model.load_state_dict(torch.load(args.load_model))
+/home/vm02/Desktop/raul/Reinitialization/main_vgg.py:157: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  model.load_state_dict(torch.load(args.load_model))
+Files already downloaded and verified
+Files already downloaded and verified
+Loaded model from ./pre-trained-models/vgg11_bn_seed_4_lr_0.01_wd_0.0001_epochs_200.pth
+Loaded model from ./pre-trained-models/vgg11_bn_seed_4_lr_0.01_wd_0.0001_epochs_200.pth
+Models will be saved in: ./modelos/vgg11_bn_lr0.01_epochs200_2024-10-17_22-59-44
+
+Training vgg11_bn with initial learning rate 0.01 and weight decay 0.0001
+
+Model Summary:
+----------------------------------------------------------------
+        Layer (type)               Output Shape         Param #
+================================================================
+            Conv2d-1           [-1, 64, 32, 32]           1,792
+       BatchNorm2d-2           [-1, 64, 32, 32]             128
+              ReLU-3           [-1, 64, 32, 32]               0
+         MaxPool2d-4           [-1, 64, 16, 16]               0
+            Conv2d-5          [-1, 128, 16, 16]          73,856
+       BatchNorm2d-6          [-1, 128, 16, 16]             256
+              ReLU-7          [-1, 128, 16, 16]               0
+         MaxPool2d-8            [-1, 128, 8, 8]               0
+            Conv2d-9            [-1, 256, 8, 8]         295,168
+      BatchNorm2d-10            [-1, 256, 8, 8]             512
+             ReLU-11            [-1, 256, 8, 8]               0
+           Conv2d-12            [-1, 256, 8, 8]         590,080
+      BatchNorm2d-13            [-1, 256, 8, 8]             512
+             ReLU-14            [-1, 256, 8, 8]               0
+        MaxPool2d-15            [-1, 256, 4, 4]               0
+           Conv2d-16            [-1, 512, 4, 4]       1,180,160
+      BatchNorm2d-17            [-1, 512, 4, 4]           1,024
+             ReLU-18            [-1, 512, 4, 4]               0
+           Conv2d-19            [-1, 512, 4, 4]       2,359,808
+      BatchNorm2d-20            [-1, 512, 4, 4]           1,024
+             ReLU-21            [-1, 512, 4, 4]               0
+        MaxPool2d-22            [-1, 512, 2, 2]               0
+           Conv2d-23            [-1, 512, 2, 2]       2,359,808
+      BatchNorm2d-24            [-1, 512, 2, 2]           1,024
+             ReLU-25            [-1, 512, 2, 2]               0
+           Conv2d-26            [-1, 512, 2, 2]       2,359,808
+      BatchNorm2d-27            [-1, 512, 2, 2]           1,024
+             ReLU-28            [-1, 512, 2, 2]               0
+        MaxPool2d-29            [-1, 512, 1, 1]               0
+AdaptiveAvgPool2d-30            [-1, 512, 7, 7]               0
+           Linear-31                 [-1, 4096]     102,764,544
+             ReLU-32                 [-1, 4096]               0
+          Dropout-33                 [-1, 4096]               0
+           Linear-34                 [-1, 4096]      16,781,312
+             ReLU-35                 [-1, 4096]               0
+          Dropout-36                 [-1, 4096]               0
+           Linear-37                   [-1, 10]          40,970
+              VGG-38                   [-1, 10]               0
+================================================================
+Total params: 128,812,810
+Trainable params: 128,812,810
+Non-trainable params: 0
+----------------------------------------------------------------
+Input size (MB): 0.01
+Forward/backward pass size (MB): 4.09
+Params size (MB): 491.38
+Estimated Total Size (MB): 495.48
+----------------------------------------------------------------
+
+[('features.0', Conv2d(3, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))), ('features.1', BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)), ('features.2', ReLU(inplace=True)), ('features.3', MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)), ('features.4', Conv2d(64, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))), ('features.5', BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)), ('features.6', ReLU(inplace=True)), ('features.7', MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)), ('features.8', Conv2d(128, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))), ('features.9', BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)), ('features.10', ReLU(inplace=True)), ('features.11', Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))), ('features.12', BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)), ('features.13', ReLU(inplace=True)), ('features.14', MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)), ('features.15', Conv2d(256, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))), ('features.16', BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)), ('features.17', ReLU(inplace=True)), ('features.18', Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))), ('features.19', BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)), ('features.20', ReLU(inplace=True)), ('features.21', MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)), ('features.22', Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))), ('features.23', BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)), ('features.24', ReLU(inplace=True)), ('features.25', Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))), ('features.26', BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)), ('features.27', ReLU(inplace=True)), ('features.28', MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False))]
+[25, 15, 2, 21, 19, 10, 3, 23, 1, 20, 24, 14, 18, 26]
+[1, 2, 3, 10, 14, 15, 18, 19, 20, 21, 23, 24, 25, 26]
+Epoch: 1/200 | Train Acc: 69.13% | Test Acc: 78.68% | Train Loss: 0.9570 | Test Loss: 0.6754 | Learning Rate: 0.010000 | Epoch Time: 23.46s | Test Time: 1.27s
+Epoch: 2/200 | Train Acc: 83.11% | Test Acc: 83.43% | Train Loss: 0.5322 | Test Loss: 0.5275 | Learning Rate: 0.010000 | Epoch Time: 23.30s | Test Time: 1.27s
+Epoch: 3/200 | Train Acc: 85.74% | Test Acc: 84.83% | Train Loss: 0.4390 | Test Loss: 0.4622 | Learning Rate: 0.010000 | Epoch Time: 23.31s | Test Time: 1.27s
+Epoch: 4/200 | Train Acc: 87.09% | Test Acc: 84.52% | Train Loss: 0.3998 | Test Loss: 0.4759 | Learning Rate: 0.010000 | Epoch Time: 23.31s | Test Time: 1.26s
+Epoch: 5/200 | Train Acc: 88.04% | Test Acc: 84.54% | Train Loss: 0.3654 | Test Loss: 0.4640 | Learning Rate: 0.010000 | Epoch Time: 23.32s | Test Time: 1.26s
+Epoch: 6/200 | Train Acc: 89.32% | Test Acc: 86.20% | Train Loss: 0.3284 | Test Loss: 0.4205 | Learning Rate: 0.010000 | Epoch Time: 22.41s | Test Time: 1.27s
+Epoch: 7/200 | Train Acc: 89.55% | Test Acc: 86.62% | Train Loss: 0.3184 | Test Loss: 0.4070 | Learning Rate: 0.010000 | Epoch Time: 23.32s | Test Time: 1.26s
+Epoch: 8/200 | Train Acc: 89.93% | Test Acc: 86.42% | Train Loss: 0.3000 | Test Loss: 0.4060 | Learning Rate: 0.010000 | Epoch Time: 23.31s | Test Time: 1.27s
+Epoch: 9/200 | Train Acc: 90.68% | Test Acc: 86.56% | Train Loss: 0.2845 | Test Loss: 0.4159 | Learning Rate: 0.010000 | Epoch Time: 23.33s | Test Time: 1.27s
+Epoch: 10/200 | Train Acc: 90.98% | Test Acc: 86.48% | Train Loss: 0.2705 | Test Loss: 0.4043 | Learning Rate: 0.010000 | Epoch Time: 23.31s | Test Time: 1.27s
+Epoch: 11/200 | Train Acc: 91.25% | Test Acc: 87.09% | Train Loss: 0.2610 | Test Loss: 0.4019 | Learning Rate: 0.010000 | Epoch Time: 23.34s | Test Time: 1.28s
+Epoch: 12/200 | Train Acc: 91.50% | Test Acc: 87.21% | Train Loss: 0.2549 | Test Loss: 0.4097 | Learning Rate: 0.010000 | Epoch Time: 23.33s | Test Time: 1.26s
+Epoch: 13/200 | Train Acc: 91.86% | Test Acc: 87.51% | Train Loss: 0.2462 | Test Loss: 0.3702 | Learning Rate: 0.010000 | Epoch Time: 23.35s | Test Time: 1.26s
+Epoch: 14/200 | Train Acc: 92.22% | Test Acc: 87.07% | Train Loss: 0.2314 | Test Loss: 0.4037 | Learning Rate: 0.010000 | Epoch Time: 23.32s | Test Time: 1.26s
+Epoch: 15/200 | Train Acc: 92.76% | Test Acc: 87.04% | Train Loss: 0.2192 | Test Loss: 0.4089 | Learning Rate: 0.010000 | Epoch Time: 23.33s | Test Time: 1.27s
+Epoch: 16/200 | Train Acc: 92.70% | Test Acc: 87.18% | Train Loss: 0.2181 | Test Loss: 0.3959 | Learning Rate: 0.010000 | Epoch Time: 23.33s | Test Time: 1.26s
+Epoch: 17/200 | Train Acc: 93.15% | Test Acc: 87.86% | Train Loss: 0.2083 | Test Loss: 0.3913 | Learning Rate: 0.010000 | Epoch Time: 23.34s | Test Time: 1.26s
+Epoch: 18/200 | Train Acc: 93.36% | Test Acc: 87.50% | Train Loss: 0.2003 | Test Loss: 0.4001 | Learning Rate: 0.010000 | Epoch Time: 23.33s | Test Time: 1.27s
+Epoch: 19/200 | Train Acc: 93.44% | Test Acc: 87.94% | Train Loss: 0.1947 | Test Loss: 0.3934 | Learning Rate: 0.010000 | Epoch Time: 23.33s | Test Time: 1.26s
+Epoch: 20/200 | Train Acc: 93.52% | Test Acc: 88.39% | Train Loss: 0.1915 | Test Loss: 0.3715 | Learning Rate: 0.010000 | Epoch Time: 23.33s | Test Time: 1.27s
+Epoch: 21/200 | Train Acc: 93.97% | Test Acc: 87.75% | Train Loss: 0.1811 | Test Loss: 0.3778 | Learning Rate: 0.010000 | Epoch Time: 23.32s | Test Time: 1.27s
+Epoch: 22/200 | Train Acc: 93.96% | Test Acc: 87.84% | Train Loss: 0.1767 | Test Loss: 0.3981 | Learning Rate: 0.010000 | Epoch Time: 23.32s | Test Time: 1.26s
+Epoch: 23/200 | Train Acc: 94.38% | Test Acc: 88.37% | Train Loss: 0.1669 | Test Loss: 0.3841 | Learning Rate: 0.010000 | Epoch Time: 23.33s | Test Time: 1.28s
+Epoch: 24/200 | Train Acc: 94.46% | Test Acc: 88.05% | Train Loss: 0.1653 | Test Loss: 0.4006 | Learning Rate: 0.010000 | Epoch Time: 23.33s | Test Time: 1.27s
+Epoch: 25/200 | Train Acc: 94.56% | Test Acc: 87.76% | Train Loss: 0.1619 | Test Loss: 0.3935 | Learning Rate: 0.010000 | Epoch Time: 23.31s | Test Time: 1.27s
+Epoch: 26/200 | Train Acc: 94.61% | Test Acc: 87.99% | Train Loss: 0.1597 | Test Loss: 0.3825 | Learning Rate: 0.010000 | Epoch Time: 23.34s | Test Time: 1.28s
+Epoch: 27/200 | Train Acc: 94.91% | Test Acc: 87.61% | Train Loss: 0.1532 | Test Loss: 0.4331 | Learning Rate: 0.010000 | Epoch Time: 22.41s | Test Time: 1.27s
+Epoch: 28/200 | Train Acc: 95.10% | Test Acc: 87.80% | Train Loss: 0.1470 | Test Loss: 0.4155 | Learning Rate: 0.010000 | Epoch Time: 23.33s | Test Time: 1.26s
+Epoch: 29/200 | Train Acc: 94.97% | Test Acc: 87.25% | Train Loss: 0.1482 | Test Loss: 0.4209 | Learning Rate: 0.010000 | Epoch Time: 23.33s | Test Time: 1.27s
+Epoch: 30/200 | Train Acc: 95.13% | Test Acc: 88.29% | Train Loss: 0.1436 | Test Loss: 0.3883 | Learning Rate: 0.010000 | Epoch Time: 23.34s | Test Time: 1.27s
+Epoch: 31/200 | Train Acc: 95.33% | Test Acc: 87.27% | Train Loss: 0.1419 | Test Loss: 0.4494 | Learning Rate: 0.010000 | Epoch Time: 23.32s | Test Time: 1.27s
+Epoch: 32/200 | Train Acc: 95.43% | Test Acc: 88.42% | Train Loss: 0.1346 | Test Loss: 0.3892 | Learning Rate: 0.010000 | Epoch Time: 23.32s | Test Time: 1.27s
+Epoch: 33/200 | Train Acc: 95.63% | Test Acc: 88.50% | Train Loss: 0.1325 | Test Loss: 0.3899 | Learning Rate: 0.010000 | Epoch Time: 23.33s | Test Time: 1.27s
+Epoch: 34/200 | Train Acc: 95.72% | Test Acc: 87.51% | Train Loss: 0.1272 | Test Loss: 0.4422 | Learning Rate: 0.010000 | Epoch Time: 23.33s | Test Time: 1.26s
+Epoch: 35/200 | Train Acc: 95.57% | Test Acc: 88.42% | Train Loss: 0.1299 | Test Loss: 0.3967 | Learning Rate: 0.010000 | Epoch Time: 23.33s | Test Time: 1.27s
+Epoch: 36/200 | Train Acc: 95.74% | Test Acc: 88.77% | Train Loss: 0.1265 | Test Loss: 0.3761 | Learning Rate: 0.010000 | Epoch Time: 23.34s | Test Time: 1.27s
+Epoch: 37/200 | Train Acc: 95.92% | Test Acc: 88.13% | Train Loss: 0.1215 | Test Loss: 0.4124 | Learning Rate: 0.010000 | Epoch Time: 23.34s | Test Time: 1.27s
+Epoch: 38/200 | Train Acc: 96.05% | Test Acc: 87.97% | Train Loss: 0.1184 | Test Loss: 0.4189 | Learning Rate: 0.010000 | Epoch Time: 23.37s | Test Time: 1.27s
+Epoch: 39/200 | Train Acc: 96.10% | Test Acc: 88.53% | Train Loss: 0.1164 | Test Loss: 0.3809 | Learning Rate: 0.010000 | Epoch Time: 23.31s | Test Time: 1.26s
+Epoch: 40/200 | Train Acc: 96.08% | Test Acc: 88.17% | Train Loss: 0.1152 | Test Loss: 0.4112 | Learning Rate: 0.010000 | Epoch Time: 23.33s | Test Time: 1.27s
+Epoch: 41/200 | Train Acc: 96.24% | Test Acc: 88.08% | Train Loss: 0.1144 | Test Loss: 0.4194 | Learning Rate: 0.010000 | Epoch Time: 23.34s | Test Time: 1.28s
+Epoch: 42/200 | Train Acc: 96.11% | Test Acc: 88.67% | Train Loss: 0.1146 | Test Loss: 0.4033 | Learning Rate: 0.010000 | Epoch Time: 23.34s | Test Time: 1.28s
+Epoch: 43/200 | Train Acc: 96.32% | Test Acc: 88.39% | Train Loss: 0.1085 | Test Loss: 0.4361 | Learning Rate: 0.010000 | Epoch Time: 23.33s | Test Time: 1.26s
+Epoch: 44/200 | Train Acc: 96.45% | Test Acc: 88.15% | Train Loss: 0.1042 | Test Loss: 0.4427 | Learning Rate: 0.010000 | Epoch Time: 23.32s | Test Time: 1.26s
+Epoch: 45/200 | Train Acc: 96.45% | Test Acc: 88.32% | Train Loss: 0.1064 | Test Loss: 0.4145 | Learning Rate: 0.010000 | Epoch Time: 23.32s | Test Time: 1.28s
+Epoch: 46/200 | Train Acc: 96.59% | Test Acc: 88.64% | Train Loss: 0.1007 | Test Loss: 0.4156 | Learning Rate: 0.010000 | Epoch Time: 23.33s | Test Time: 1.27s
+Epoch: 47/200 | Train Acc: 96.64% | Test Acc: 88.21% | Train Loss: 0.0988 | Test Loss: 0.4137 | Learning Rate: 0.010000 | Epoch Time: 23.32s | Test Time: 1.26s
+Epoch: 48/200 | Train Acc: 96.64% | Test Acc: 87.48% | Train Loss: 0.0990 | Test Loss: 0.4591 | Learning Rate: 0.010000 | Epoch Time: 22.58s | Test Time: 1.27s
+Epoch: 49/200 | Train Acc: 96.66% | Test Acc: 88.41% | Train Loss: 0.0981 | Test Loss: 0.4538 | Learning Rate: 0.010000 | Epoch Time: 23.36s | Test Time: 1.26s
+Epoch: 50/200 | Train Acc: 96.79% | Test Acc: 88.65% | Train Loss: 0.0975 | Test Loss: 0.4135 | Learning Rate: 0.010000 | Epoch Time: 23.33s | Test Time: 1.26s
+Epoch: 51/200 | Train Acc: 97.01% | Test Acc: 88.06% | Train Loss: 0.0909 | Test Loss: 0.4391 | Learning Rate: 0.010000 | Epoch Time: 23.33s | Test Time: 1.27s
+Epoch: 52/200 | Train Acc: 96.86% | Test Acc: 88.42% | Train Loss: 0.0928 | Test Loss: 0.4200 | Learning Rate: 0.010000 | Epoch Time: 23.33s | Test Time: 1.26s
+Epoch: 53/200 | Train Acc: 96.80% | Test Acc: 87.92% | Train Loss: 0.0937 | Test Loss: 0.4408 | Learning Rate: 0.010000 | Epoch Time: 23.33s | Test Time: 1.27s
+Epoch: 54/200 | Train Acc: 96.98% | Test Acc: 88.47% | Train Loss: 0.0899 | Test Loss: 0.4435 | Learning Rate: 0.010000 | Epoch Time: 23.35s | Test Time: 1.28s
+Epoch: 55/200 | Train Acc: 96.87% | Test Acc: 88.83% | Train Loss: 0.0911 | Test Loss: 0.4295 | Learning Rate: 0.010000 | Epoch Time: 23.34s | Test Time: 1.26s
+Epoch: 56/200 | Train Acc: 97.09% | Test Acc: 88.49% | Train Loss: 0.0876 | Test Loss: 0.4313 | Learning Rate: 0.010000 | Epoch Time: 23.33s | Test Time: 1.27s
+Epoch: 57/200 | Train Acc: 97.17% | Test Acc: 88.35% | Train Loss: 0.0839 | Test Loss: 0.4386 | Learning Rate: 0.010000 | Epoch Time: 23.33s | Test Time: 1.27s
+Epoch: 58/200 | Train Acc: 97.02% | Test Acc: 88.76% | Train Loss: 0.0863 | Test Loss: 0.4228 | Learning Rate: 0.010000 | Epoch Time: 23.33s | Test Time: 1.27s
+Epoch: 59/200 | Train Acc: 97.24% | Test Acc: 88.61% | Train Loss: 0.0838 | Test Loss: 0.4222 | Learning Rate: 0.010000 | Epoch Time: 23.33s | Test Time: 1.26s
+Epoch: 60/200 | Train Acc: 97.25% | Test Acc: 88.48% | Train Loss: 0.0839 | Test Loss: 0.4478 | Learning Rate: 0.010000 | Epoch Time: 23.33s | Test Time: 1.26s
+Epoch: 61/200 | Train Acc: 97.25% | Test Acc: 88.18% | Train Loss: 0.0823 | Test Loss: 0.4528 | Learning Rate: 0.010000 | Epoch Time: 23.34s | Test Time: 1.27s
+Epoch: 62/200 | Train Acc: 97.30% | Test Acc: 88.57% | Train Loss: 0.0774 | Test Loss: 0.4571 | Learning Rate: 0.010000 | Epoch Time: 23.34s | Test Time: 1.28s
+Epoch: 63/200 | Train Acc: 97.31% | Test Acc: 88.65% | Train Loss: 0.0801 | Test Loss: 0.4412 | Learning Rate: 0.010000 | Epoch Time: 16.20s | Test Time: 0.49s
+Epoch: 64/200 | Train Acc: 97.33% | Test Acc: 88.69% | Train Loss: 0.0786 | Test Loss: 0.4308 | Learning Rate: 0.010000 | Epoch Time: 10.95s | Test Time: 0.48s
+Epoch: 65/200 | Train Acc: 97.28% | Test Acc: 88.65% | Train Loss: 0.0808 | Test Loss: 0.4323 | Learning Rate: 0.010000 | Epoch Time: 10.93s | Test Time: 0.48s
+Epoch: 66/200 | Train Acc: 97.39% | Test Acc: 88.38% | Train Loss: 0.0775 | Test Loss: 0.4582 | Learning Rate: 0.010000 | Epoch Time: 10.92s | Test Time: 0.49s
+Epoch: 67/200 | Train Acc: 97.69% | Test Acc: 88.36% | Train Loss: 0.0699 | Test Loss: 0.4486 | Learning Rate: 0.010000 | Epoch Time: 10.92s | Test Time: 0.49s
+Epoch: 68/200 | Train Acc: 97.61% | Test Acc: 88.19% | Train Loss: 0.0730 | Test Loss: 0.4720 | Learning Rate: 0.010000 | Epoch Time: 10.97s | Test Time: 0.48s
+Epoch: 69/200 | Train Acc: 97.45% | Test Acc: 88.67% | Train Loss: 0.0759 | Test Loss: 0.4483 | Learning Rate: 0.010000 | Epoch Time: 10.96s | Test Time: 0.48s
+Epoch: 70/200 | Train Acc: 97.53% | Test Acc: 88.85% | Train Loss: 0.0736 | Test Loss: 0.4381 | Learning Rate: 0.010000 | Epoch Time: 10.94s | Test Time: 0.48s
+Epoch: 71/200 | Train Acc: 97.68% | Test Acc: 88.84% | Train Loss: 0.0680 | Test Loss: 0.4615 | Learning Rate: 0.010000 | Epoch Time: 10.91s | Test Time: 0.48s
+Epoch: 72/200 | Train Acc: 97.61% | Test Acc: 88.35% | Train Loss: 0.0718 | Test Loss: 0.4491 | Learning Rate: 0.010000 | Epoch Time: 10.96s | Test Time: 0.48s
+Epoch: 73/200 | Train Acc: 97.67% | Test Acc: 88.51% | Train Loss: 0.0698 | Test Loss: 0.4401 | Learning Rate: 0.010000 | Epoch Time: 10.94s | Test Time: 0.48s
+Epoch: 74/200 | Train Acc: 97.64% | Test Acc: 88.61% | Train Loss: 0.0691 | Test Loss: 0.4627 | Learning Rate: 0.010000 | Epoch Time: 10.92s | Test Time: 0.48s
+Epoch: 75/200 | Train Acc: 97.75% | Test Acc: 88.83% | Train Loss: 0.0680 | Test Loss: 0.4603 | Learning Rate: 0.010000 | Epoch Time: 10.93s | Test Time: 0.48s
+Epoch: 76/200 | Train Acc: 97.55% | Test Acc: 88.14% | Train Loss: 0.0708 | Test Loss: 0.4617 | Learning Rate: 0.010000 | Epoch Time: 10.93s | Test Time: 0.48s
+Epoch: 77/200 | Train Acc: 97.81% | Test Acc: 88.88% | Train Loss: 0.0649 | Test Loss: 0.4630 | Learning Rate: 0.010000 | Epoch Time: 10.95s | Test Time: 0.49s
+Epoch: 78/200 | Train Acc: 97.88% | Test Acc: 89.04% | Train Loss: 0.0644 | Test Loss: 0.4469 | Learning Rate: 0.010000 | Epoch Time: 10.97s | Test Time: 0.49s
+Epoch: 79/200 | Train Acc: 97.80% | Test Acc: 88.72% | Train Loss: 0.0644 | Test Loss: 0.4581 | Learning Rate: 0.010000 | Epoch Time: 10.98s | Test Time: 0.50s
+Epoch: 80/200 | Train Acc: 97.93% | Test Acc: 88.75% | Train Loss: 0.0594 | Test Loss: 0.4664 | Learning Rate: 0.010000 | Epoch Time: 10.96s | Test Time: 0.48s
+Epoch: 81/200 | Train Acc: 97.68% | Test Acc: 88.74% | Train Loss: 0.0682 | Test Loss: 0.4589 | Learning Rate: 0.010000 | Epoch Time: 10.94s | Test Time: 0.48s
+Epoch: 82/200 | Train Acc: 97.81% | Test Acc: 88.72% | Train Loss: 0.0649 | Test Loss: 0.4797 | Learning Rate: 0.010000 | Epoch Time: 10.97s | Test Time: 0.48s
+Epoch: 83/200 | Train Acc: 97.87% | Test Acc: 88.73% | Train Loss: 0.0620 | Test Loss: 0.4724 | Learning Rate: 0.010000 | Epoch Time: 10.96s | Test Time: 0.48s
+Epoch: 84/200 | Train Acc: 97.81% | Test Acc: 88.64% | Train Loss: 0.0641 | Test Loss: 0.4597 | Learning Rate: 0.010000 | Epoch Time: 10.89s | Test Time: 0.49s
+Epoch: 85/200 | Train Acc: 97.88% | Test Acc: 89.16% | Train Loss: 0.0644 | Test Loss: 0.4448 | Learning Rate: 0.010000 | Epoch Time: 10.96s | Test Time: 0.49s
+Epoch: 86/200 | Train Acc: 98.05% | Test Acc: 88.54% | Train Loss: 0.0594 | Test Loss: 0.4704 | Learning Rate: 0.010000 | Epoch Time: 10.95s | Test Time: 0.48s
+Epoch: 87/200 | Train Acc: 97.87% | Test Acc: 88.83% | Train Loss: 0.0627 | Test Loss: 0.4774 | Learning Rate: 0.010000 | Epoch Time: 10.96s | Test Time: 0.48s
+Epoch: 88/200 | Train Acc: 98.01% | Test Acc: 88.58% | Train Loss: 0.0594 | Test Loss: 0.4636 | Learning Rate: 0.010000 | Epoch Time: 10.95s | Test Time: 0.48s
+Epoch: 89/200 | Train Acc: 98.00% | Test Acc: 88.06% | Train Loss: 0.0599 | Test Loss: 0.4894 | Learning Rate: 0.010000 | Epoch Time: 10.96s | Test Time: 0.48s
+Epoch: 90/200 | Train Acc: 97.92% | Test Acc: 88.79% | Train Loss: 0.0621 | Test Loss: 0.4685 | Learning Rate: 0.010000 | Epoch Time: 10.93s | Test Time: 0.48s
+Epoch: 91/200 | Train Acc: 98.03% | Test Acc: 88.82% | Train Loss: 0.0575 | Test Loss: 0.4540 | Learning Rate: 0.010000 | Epoch Time: 10.96s | Test Time: 0.48s
+Epoch: 92/200 | Train Acc: 98.02% | Test Acc: 88.80% | Train Loss: 0.0589 | Test Loss: 0.4736 | Learning Rate: 0.010000 | Epoch Time: 10.96s | Test Time: 0.48s
+Epoch: 93/200 | Train Acc: 98.00% | Test Acc: 88.53% | Train Loss: 0.0603 | Test Loss: 0.4633 | Learning Rate: 0.010000 | Epoch Time: 10.94s | Test Time: 0.50s
+Epoch: 94/200 | Train Acc: 97.96% | Test Acc: 88.57% | Train Loss: 0.0610 | Test Loss: 0.4498 | Learning Rate: 0.010000 | Epoch Time: 10.97s | Test Time: 0.49s
+Epoch: 95/200 | Train Acc: 97.97% | Test Acc: 88.41% | Train Loss: 0.0606 | Test Loss: 0.4729 | Learning Rate: 0.010000 | Epoch Time: 10.94s | Test Time: 0.49s
+Epoch: 96/200 | Train Acc: 98.10% | Test Acc: 88.68% | Train Loss: 0.0559 | Test Loss: 0.4479 | Learning Rate: 0.010000 | Epoch Time: 10.97s | Test Time: 0.48s
+Epoch: 97/200 | Train Acc: 98.12% | Test Acc: 88.54% | Train Loss: 0.0568 | Test Loss: 0.4565 | Learning Rate: 0.010000 | Epoch Time: 10.92s | Test Time: 0.48s
+Epoch: 98/200 | Train Acc: 98.22% | Test Acc: 88.68% | Train Loss: 0.0526 | Test Loss: 0.4756 | Learning Rate: 0.010000 | Epoch Time: 10.96s | Test Time: 0.48s
+Epoch: 99/200 | Train Acc: 98.00% | Test Acc: 88.49% | Train Loss: 0.0603 | Test Loss: 0.4766 | Learning Rate: 0.010000 | Epoch Time: 10.88s | Test Time: 0.48s
+Epoch: 100/200 | Train Acc: 98.21% | Test Acc: 88.06% | Train Loss: 0.0535 | Test Loss: 0.5024 | Learning Rate: 0.001000 | Epoch Time: 10.95s | Test Time: 0.48s
+Epoch: 101/200 | Train Acc: 98.83% | Test Acc: 89.33% | Train Loss: 0.0338 | Test Loss: 0.4558 | Learning Rate: 0.001000 | Epoch Time: 10.93s | Test Time: 0.49s
+Epoch: 102/200 | Train Acc: 99.12% | Test Acc: 89.76% | Train Loss: 0.0270 | Test Loss: 0.4592 | Learning Rate: 0.001000 | Epoch Time: 10.95s | Test Time: 0.48s
+Epoch: 103/200 | Train Acc: 99.32% | Test Acc: 89.78% | Train Loss: 0.0206 | Test Loss: 0.4717 | Learning Rate: 0.001000 | Epoch Time: 10.98s | Test Time: 0.48s
+Epoch: 104/200 | Train Acc: 99.26% | Test Acc: 89.72% | Train Loss: 0.0209 | Test Loss: 0.4807 | Learning Rate: 0.001000 | Epoch Time: 10.93s | Test Time: 0.48s
+Epoch: 105/200 | Train Acc: 99.35% | Test Acc: 89.76% | Train Loss: 0.0185 | Test Loss: 0.4810 | Learning Rate: 0.001000 | Epoch Time: 10.90s | Test Time: 0.48s
+Epoch: 106/200 | Train Acc: 99.44% | Test Acc: 89.77% | Train Loss: 0.0172 | Test Loss: 0.4914 | Learning Rate: 0.001000 | Epoch Time: 10.95s | Test Time: 0.49s
+Epoch: 107/200 | Train Acc: 99.44% | Test Acc: 89.82% | Train Loss: 0.0170 | Test Loss: 0.4947 | Learning Rate: 0.001000 | Epoch Time: 10.88s | Test Time: 0.48s
+Epoch: 108/200 | Train Acc: 99.46% | Test Acc: 90.02% | Train Loss: 0.0159 | Test Loss: 0.4856 | Learning Rate: 0.001000 | Epoch Time: 10.93s | Test Time: 0.50s
+Epoch: 109/200 | Train Acc: 99.52% | Test Acc: 90.06% | Train Loss: 0.0152 | Test Loss: 0.4916 | Learning Rate: 0.001000 | Epoch Time: 10.96s | Test Time: 0.50s
+Epoch: 110/200 | Train Acc: 99.56% | Test Acc: 90.02% | Train Loss: 0.0137 | Test Loss: 0.5041 | Learning Rate: 0.001000 | Epoch Time: 10.95s | Test Time: 0.48s
+Epoch: 111/200 | Train Acc: 99.54% | Test Acc: 89.94% | Train Loss: 0.0138 | Test Loss: 0.5073 | Learning Rate: 0.001000 | Epoch Time: 10.91s | Test Time: 0.49s
+Epoch: 112/200 | Train Acc: 99.50% | Test Acc: 89.97% | Train Loss: 0.0145 | Test Loss: 0.5021 | Learning Rate: 0.001000 | Epoch Time: 10.93s | Test Time: 0.48s
+Epoch: 113/200 | Train Acc: 99.53% | Test Acc: 90.10% | Train Loss: 0.0140 | Test Loss: 0.5131 | Learning Rate: 0.001000 | Epoch Time: 10.90s | Test Time: 0.48s
+Epoch: 114/200 | Train Acc: 99.55% | Test Acc: 90.09% | Train Loss: 0.0133 | Test Loss: 0.5109 | Learning Rate: 0.001000 | Epoch Time: 10.96s | Test Time: 0.49s
+Epoch: 115/200 | Train Acc: 99.57% | Test Acc: 90.09% | Train Loss: 0.0124 | Test Loss: 0.5230 | Learning Rate: 0.001000 | Epoch Time: 10.91s | Test Time: 0.48s
+Epoch: 116/200 | Train Acc: 99.59% | Test Acc: 90.18% | Train Loss: 0.0119 | Test Loss: 0.5187 | Learning Rate: 0.001000 | Epoch Time: 10.93s | Test Time: 0.48s
+Epoch: 117/200 | Train Acc: 99.59% | Test Acc: 90.19% | Train Loss: 0.0122 | Test Loss: 0.5131 | Learning Rate: 0.001000 | Epoch Time: 10.90s | Test Time: 0.49s
+Epoch: 118/200 | Train Acc: 99.63% | Test Acc: 90.27% | Train Loss: 0.0112 | Test Loss: 0.5270 | Learning Rate: 0.001000 | Epoch Time: 10.97s | Test Time: 0.49s
+Epoch: 119/200 | Train Acc: 99.54% | Test Acc: 90.09% | Train Loss: 0.0130 | Test Loss: 0.5176 | Learning Rate: 0.001000 | Epoch Time: 10.97s | Test Time: 0.50s
+Epoch: 120/200 | Train Acc: 99.65% | Test Acc: 90.14% | Train Loss: 0.0104 | Test Loss: 0.5218 | Learning Rate: 0.001000 | Epoch Time: 10.93s | Test Time: 0.49s
+Epoch: 121/200 | Train Acc: 99.57% | Test Acc: 89.95% | Train Loss: 0.0121 | Test Loss: 0.5278 | Learning Rate: 0.001000 | Epoch Time: 10.91s | Test Time: 0.48s
+Epoch: 122/200 | Train Acc: 99.63% | Test Acc: 90.15% | Train Loss: 0.0112 | Test Loss: 0.5325 | Learning Rate: 0.001000 | Epoch Time: 10.95s | Test Time: 0.48s
+Epoch: 123/200 | Train Acc: 99.60% | Test Acc: 90.18% | Train Loss: 0.0123 | Test Loss: 0.5197 | Learning Rate: 0.001000 | Epoch Time: 10.95s | Test Time: 0.48s
+Epoch: 124/200 | Train Acc: 99.65% | Test Acc: 90.23% | Train Loss: 0.0104 | Test Loss: 0.5159 | Learning Rate: 0.001000 | Epoch Time: 10.95s | Test Time: 0.51s
+Epoch: 125/200 | Train Acc: 99.64% | Test Acc: 90.24% | Train Loss: 0.0107 | Test Loss: 0.5230 | Learning Rate: 0.001000 | Epoch Time: 10.92s | Test Time: 0.49s
+Epoch: 126/200 | Train Acc: 99.68% | Test Acc: 90.21% | Train Loss: 0.0093 | Test Loss: 0.5330 | Learning Rate: 0.001000 | Epoch Time: 10.90s | Test Time: 0.48s
+Epoch: 127/200 | Train Acc: 99.67% | Test Acc: 90.45% | Train Loss: 0.0102 | Test Loss: 0.5271 | Learning Rate: 0.001000 | Epoch Time: 10.97s | Test Time: 0.48s
+Epoch: 128/200 | Train Acc: 99.67% | Test Acc: 90.10% | Train Loss: 0.0096 | Test Loss: 0.5335 | Learning Rate: 0.001000 | Epoch Time: 10.94s | Test Time: 0.48s
+Epoch: 129/200 | Train Acc: 99.64% | Test Acc: 90.13% | Train Loss: 0.0093 | Test Loss: 0.5304 | Learning Rate: 0.001000 | Epoch Time: 10.96s | Test Time: 0.49s
+Epoch: 130/200 | Train Acc: 99.72% | Test Acc: 90.20% | Train Loss: 0.0086 | Test Loss: 0.5298 | Learning Rate: 0.001000 | Epoch Time: 10.95s | Test Time: 0.48s
+Epoch: 131/200 | Train Acc: 99.70% | Test Acc: 90.39% | Train Loss: 0.0098 | Test Loss: 0.5338 | Learning Rate: 0.001000 | Epoch Time: 10.95s | Test Time: 0.48s
+Epoch: 132/200 | Train Acc: 99.69% | Test Acc: 90.41% | Train Loss: 0.0092 | Test Loss: 0.5325 | Learning Rate: 0.001000 | Epoch Time: 10.94s | Test Time: 0.49s
+Epoch: 133/200 | Train Acc: 99.69% | Test Acc: 90.32% | Train Loss: 0.0101 | Test Loss: 0.5355 | Learning Rate: 0.001000 | Epoch Time: 10.95s | Test Time: 0.49s
+Epoch: 134/200 | Train Acc: 99.67% | Test Acc: 90.22% | Train Loss: 0.0092 | Test Loss: 0.5386 | Learning Rate: 0.001000 | Epoch Time: 10.95s | Test Time: 0.49s
+Epoch: 135/200 | Train Acc: 99.70% | Test Acc: 90.30% | Train Loss: 0.0090 | Test Loss: 0.5350 | Learning Rate: 0.001000 | Epoch Time: 10.92s | Test Time: 0.48s
+Epoch: 136/200 | Train Acc: 99.69% | Test Acc: 90.36% | Train Loss: 0.0088 | Test Loss: 0.5341 | Learning Rate: 0.001000 | Epoch Time: 10.96s | Test Time: 0.48s
+Epoch: 137/200 | Train Acc: 99.71% | Test Acc: 90.02% | Train Loss: 0.0095 | Test Loss: 0.5362 | Learning Rate: 0.001000 | Epoch Time: 10.91s | Test Time: 0.48s
+Epoch: 138/200 | Train Acc: 99.69% | Test Acc: 90.10% | Train Loss: 0.0097 | Test Loss: 0.5424 | Learning Rate: 0.001000 | Epoch Time: 10.93s | Test Time: 0.50s
+Epoch: 139/200 | Train Acc: 99.73% | Test Acc: 90.24% | Train Loss: 0.0083 | Test Loss: 0.5310 | Learning Rate: 0.001000 | Epoch Time: 10.93s | Test Time: 0.48s
+Epoch: 140/200 | Train Acc: 99.69% | Test Acc: 90.26% | Train Loss: 0.0094 | Test Loss: 0.5342 | Learning Rate: 0.001000 | Epoch Time: 10.94s | Test Time: 0.48s
+Epoch: 141/200 | Train Acc: 99.72% | Test Acc: 90.10% | Train Loss: 0.0087 | Test Loss: 0.5429 | Learning Rate: 0.001000 | Epoch Time: 10.95s | Test Time: 0.48s
+Epoch: 142/200 | Train Acc: 99.68% | Test Acc: 90.09% | Train Loss: 0.0097 | Test Loss: 0.5324 | Learning Rate: 0.001000 | Epoch Time: 10.95s | Test Time: 0.48s
+Epoch: 143/200 | Train Acc: 99.71% | Test Acc: 90.11% | Train Loss: 0.0089 | Test Loss: 0.5290 | Learning Rate: 0.001000 | Epoch Time: 10.93s | Test Time: 0.48s
+Epoch: 144/200 | Train Acc: 99.68% | Test Acc: 90.02% | Train Loss: 0.0091 | Test Loss: 0.5373 | Learning Rate: 0.001000 | Epoch Time: 10.92s | Test Time: 0.48s
+Epoch: 145/200 | Train Acc: 99.71% | Test Acc: 90.24% | Train Loss: 0.0086 | Test Loss: 0.5402 | Learning Rate: 0.001000 | Epoch Time: 10.98s | Test Time: 0.48s
+Epoch: 146/200 | Train Acc: 99.75% | Test Acc: 90.25% | Train Loss: 0.0074 | Test Loss: 0.5380 | Learning Rate: 0.001000 | Epoch Time: 10.95s | Test Time: 0.48s
+Epoch: 147/200 | Train Acc: 99.70% | Test Acc: 90.27% | Train Loss: 0.0088 | Test Loss: 0.5288 | Learning Rate: 0.001000 | Epoch Time: 10.91s | Test Time: 0.48s
+Epoch: 148/200 | Train Acc: 99.76% | Test Acc: 90.20% | Train Loss: 0.0077 | Test Loss: 0.5506 | Learning Rate: 0.001000 | Epoch Time: 10.92s | Test Time: 0.48s
+Epoch: 149/200 | Train Acc: 99.73% | Test Acc: 90.17% | Train Loss: 0.0078 | Test Loss: 0.5505 | Learning Rate: 0.001000 | Epoch Time: 10.99s | Test Time: 0.48s
+Epoch: 150/200 | Train Acc: 99.75% | Test Acc: 90.26% | Train Loss: 0.0079 | Test Loss: 0.5454 | Learning Rate: 0.000100 | Epoch Time: 10.94s | Test Time: 0.48s
+Epoch: 151/200 | Train Acc: 99.76% | Test Acc: 90.08% | Train Loss: 0.0076 | Test Loss: 0.5482 | Learning Rate: 0.000100 | Epoch Time: 10.96s | Test Time: 0.48s
+Epoch: 152/200 | Train Acc: 99.76% | Test Acc: 90.24% | Train Loss: 0.0072 | Test Loss: 0.5467 | Learning Rate: 0.000100 | Epoch Time: 10.89s | Test Time: 0.48s
+Epoch: 153/200 | Train Acc: 99.76% | Test Acc: 90.22% | Train Loss: 0.0075 | Test Loss: 0.5420 | Learning Rate: 0.000100 | Epoch Time: 10.97s | Test Time: 0.49s
+Epoch: 154/200 | Train Acc: 99.75% | Test Acc: 90.26% | Train Loss: 0.0076 | Test Loss: 0.5464 | Learning Rate: 0.000100 | Epoch Time: 10.94s | Test Time: 0.48s
+Epoch: 155/200 | Train Acc: 99.76% | Test Acc: 90.20% | Train Loss: 0.0078 | Test Loss: 0.5439 | Learning Rate: 0.000100 | Epoch Time: 10.94s | Test Time: 0.49s
+Epoch: 156/200 | Train Acc: 99.79% | Test Acc: 90.28% | Train Loss: 0.0066 | Test Loss: 0.5372 | Learning Rate: 0.000100 | Epoch Time: 10.96s | Test Time: 0.48s
+Epoch: 157/200 | Train Acc: 99.76% | Test Acc: 90.35% | Train Loss: 0.0069 | Test Loss: 0.5343 | Learning Rate: 0.000100 | Epoch Time: 10.95s | Test Time: 0.49s
+Epoch: 158/200 | Train Acc: 99.78% | Test Acc: 90.33% | Train Loss: 0.0071 | Test Loss: 0.5416 | Learning Rate: 0.000100 | Epoch Time: 10.97s | Test Time: 0.48s
+Epoch: 159/200 | Train Acc: 99.77% | Test Acc: 90.20% | Train Loss: 0.0071 | Test Loss: 0.5395 | Learning Rate: 0.000100 | Epoch Time: 10.95s | Test Time: 0.49s
+Epoch: 160/200 | Train Acc: 99.74% | Test Acc: 90.31% | Train Loss: 0.0077 | Test Loss: 0.5433 | Learning Rate: 0.000100 | Epoch Time: 10.98s | Test Time: 0.48s
+Epoch: 161/200 | Train Acc: 99.76% | Test Acc: 90.39% | Train Loss: 0.0070 | Test Loss: 0.5364 | Learning Rate: 0.000100 | Epoch Time: 10.93s | Test Time: 0.49s
+Epoch: 162/200 | Train Acc: 99.79% | Test Acc: 90.32% | Train Loss: 0.0066 | Test Loss: 0.5386 | Learning Rate: 0.000100 | Epoch Time: 10.93s | Test Time: 0.48s
+Epoch: 163/200 | Train Acc: 99.74% | Test Acc: 90.41% | Train Loss: 0.0072 | Test Loss: 0.5314 | Learning Rate: 0.000100 | Epoch Time: 10.97s | Test Time: 0.49s
+Epoch: 164/200 | Train Acc: 99.77% | Test Acc: 90.30% | Train Loss: 0.0069 | Test Loss: 0.5332 | Learning Rate: 0.000100 | Epoch Time: 10.94s | Test Time: 0.48s
+Epoch: 165/200 | Train Acc: 99.78% | Test Acc: 90.30% | Train Loss: 0.0068 | Test Loss: 0.5434 | Learning Rate: 0.000100 | Epoch Time: 10.91s | Test Time: 0.48s
+Epoch: 166/200 | Train Acc: 99.75% | Test Acc: 90.38% | Train Loss: 0.0074 | Test Loss: 0.5393 | Learning Rate: 0.000100 | Epoch Time: 10.97s | Test Time: 0.48s
+Epoch: 167/200 | Train Acc: 99.79% | Test Acc: 90.27% | Train Loss: 0.0064 | Test Loss: 0.5390 | Learning Rate: 0.000100 | Epoch Time: 10.96s | Test Time: 0.49s
+Epoch: 168/200 | Train Acc: 99.75% | Test Acc: 90.31% | Train Loss: 0.0077 | Test Loss: 0.5428 | Learning Rate: 0.000100 | Epoch Time: 10.93s | Test Time: 0.48s
+Epoch: 169/200 | Train Acc: 99.77% | Test Acc: 90.22% | Train Loss: 0.0065 | Test Loss: 0.5371 | Learning Rate: 0.000100 | Epoch Time: 10.94s | Test Time: 0.48s
+Epoch: 170/200 | Train Acc: 99.75% | Test Acc: 90.36% | Train Loss: 0.0074 | Test Loss: 0.5437 | Learning Rate: 0.000100 | Epoch Time: 10.91s | Test Time: 0.49s
+Epoch: 171/200 | Train Acc: 99.79% | Test Acc: 90.31% | Train Loss: 0.0067 | Test Loss: 0.5416 | Learning Rate: 0.000100 | Epoch Time: 10.92s | Test Time: 0.48s
+Epoch: 172/200 | Train Acc: 99.79% | Test Acc: 90.27% | Train Loss: 0.0064 | Test Loss: 0.5429 | Learning Rate: 0.000100 | Epoch Time: 10.98s | Test Time: 0.48s
+Epoch: 173/200 | Train Acc: 99.77% | Test Acc: 90.28% | Train Loss: 0.0067 | Test Loss: 0.5384 | Learning Rate: 0.000100 | Epoch Time: 10.91s | Test Time: 0.48s
+Epoch: 174/200 | Train Acc: 99.77% | Test Acc: 90.33% | Train Loss: 0.0068 | Test Loss: 0.5438 | Learning Rate: 0.000100 | Epoch Time: 10.94s | Test Time: 0.48s
+Epoch: 175/200 | Train Acc: 99.79% | Test Acc: 90.42% | Train Loss: 0.0061 | Test Loss: 0.5365 | Learning Rate: 0.000100 | Epoch Time: 10.96s | Test Time: 0.48s
+Epoch: 176/200 | Train Acc: 99.73% | Test Acc: 90.26% | Train Loss: 0.0078 | Test Loss: 0.5397 | Learning Rate: 0.000100 | Epoch Time: 10.98s | Test Time: 0.49s
+Epoch: 177/200 | Train Acc: 99.80% | Test Acc: 90.38% | Train Loss: 0.0059 | Test Loss: 0.5360 | Learning Rate: 0.000100 | Epoch Time: 10.98s | Test Time: 0.48s
+Epoch: 178/200 | Train Acc: 99.80% | Test Acc: 90.29% | Train Loss: 0.0063 | Test Loss: 0.5409 | Learning Rate: 0.000100 | Epoch Time: 10.96s | Test Time: 0.49s
+Epoch: 179/200 | Train Acc: 99.77% | Test Acc: 90.45% | Train Loss: 0.0071 | Test Loss: 0.5473 | Learning Rate: 0.000100 | Epoch Time: 10.95s | Test Time: 0.48s
+Epoch: 180/200 | Train Acc: 99.78% | Test Acc: 90.45% | Train Loss: 0.0068 | Test Loss: 0.5362 | Learning Rate: 0.000100 | Epoch Time: 10.99s | Test Time: 0.48s
+Epoch: 181/200 | Train Acc: 99.77% | Test Acc: 90.45% | Train Loss: 0.0072 | Test Loss: 0.5396 | Learning Rate: 0.000100 | Epoch Time: 10.95s | Test Time: 0.48s
+Epoch: 182/200 | Train Acc: 99.78% | Test Acc: 90.37% | Train Loss: 0.0065 | Test Loss: 0.5435 | Learning Rate: 0.000100 | Epoch Time: 10.88s | Test Time: 0.48s
+Epoch: 183/200 | Train Acc: 99.77% | Test Acc: 90.32% | Train Loss: 0.0067 | Test Loss: 0.5359 | Learning Rate: 0.000100 | Epoch Time: 10.93s | Test Time: 0.48s
+Epoch: 184/200 | Train Acc: 99.79% | Test Acc: 90.32% | Train Loss: 0.0068 | Test Loss: 0.5490 | Learning Rate: 0.000100 | Epoch Time: 10.93s | Test Time: 0.50s
+Epoch: 185/200 | Train Acc: 99.74% | Test Acc: 90.27% | Train Loss: 0.0071 | Test Loss: 0.5377 | Learning Rate: 0.000100 | Epoch Time: 10.93s | Test Time: 0.48s
+Epoch: 186/200 | Train Acc: 99.77% | Test Acc: 90.31% | Train Loss: 0.0062 | Test Loss: 0.5426 | Learning Rate: 0.000100 | Epoch Time: 10.93s | Test Time: 0.49s
+Epoch: 187/200 | Train Acc: 99.76% | Test Acc: 90.32% | Train Loss: 0.0072 | Test Loss: 0.5357 | Learning Rate: 0.000100 | Epoch Time: 10.96s | Test Time: 0.50s
+Epoch: 188/200 | Train Acc: 99.81% | Test Acc: 90.33% | Train Loss: 0.0059 | Test Loss: 0.5371 | Learning Rate: 0.000100 | Epoch Time: 10.96s | Test Time: 0.48s
+Epoch: 189/200 | Train Acc: 99.83% | Test Acc: 90.28% | Train Loss: 0.0056 | Test Loss: 0.5426 | Learning Rate: 0.000100 | Epoch Time: 10.96s | Test Time: 0.48s
+Epoch: 190/200 | Train Acc: 99.79% | Test Acc: 90.31% | Train Loss: 0.0059 | Test Loss: 0.5433 | Learning Rate: 0.000100 | Epoch Time: 10.95s | Test Time: 0.48s
+Epoch: 191/200 | Train Acc: 99.76% | Test Acc: 90.40% | Train Loss: 0.0067 | Test Loss: 0.5381 | Learning Rate: 0.000100 | Epoch Time: 10.94s | Test Time: 0.48s
+Epoch: 192/200 | Train Acc: 99.80% | Test Acc: 90.32% | Train Loss: 0.0061 | Test Loss: 0.5409 | Learning Rate: 0.000100 | Epoch Time: 10.98s | Test Time: 0.48s
+Epoch: 193/200 | Train Acc: 99.81% | Test Acc: 90.36% | Train Loss: 0.0061 | Test Loss: 0.5422 | Learning Rate: 0.000100 | Epoch Time: 10.95s | Test Time: 0.48s
+Epoch: 194/200 | Train Acc: 99.80% | Test Acc: 90.29% | Train Loss: 0.0062 | Test Loss: 0.5468 | Learning Rate: 0.000100 | Epoch Time: 10.94s | Test Time: 0.48s
+Epoch: 195/200 | Train Acc: 99.79% | Test Acc: 90.34% | Train Loss: 0.0068 | Test Loss: 0.5367 | Learning Rate: 0.000100 | Epoch Time: 10.97s | Test Time: 0.48s
+Epoch: 196/200 | Train Acc: 99.82% | Test Acc: 90.24% | Train Loss: 0.0054 | Test Loss: 0.5450 | Learning Rate: 0.000100 | Epoch Time: 10.95s | Test Time: 0.48s
+Epoch: 197/200 | Train Acc: 99.78% | Test Acc: 90.42% | Train Loss: 0.0063 | Test Loss: 0.5539 | Learning Rate: 0.000100 | Epoch Time: 10.92s | Test Time: 0.48s
+Epoch: 198/200 | Train Acc: 99.80% | Test Acc: 90.38% | Train Loss: 0.0066 | Test Loss: 0.5488 | Learning Rate: 0.000100 | Epoch Time: 10.95s | Test Time: 0.48s
+Epoch: 199/200 | Train Acc: 99.81% | Test Acc: 90.27% | Train Loss: 0.0062 | Test Loss: 0.5488 | Learning Rate: 0.000100 | Epoch Time: 10.97s | Test Time: 0.48s
+Epoch: 200/200 | Train Acc: 99.74% | Test Acc: 90.24% | Train Loss: 0.0076 | Test Loss: 0.5444 | Learning Rate: 0.000100 | Epoch Time: 10.94s | Test Time: 0.48s
+Saved final model at: ./modelos/vgg11_bn_lr0.01_epochs200_2024-10-17_22-59-44/vgg11_bn_final_model.pth
+Training history saved to ./modelos/vgg11_bn_lr0.01_epochs200_2024-10-17_22-59-44/vgg11_bn_lr0.01_epochs200_2024-10-17_22-59-44_history.json

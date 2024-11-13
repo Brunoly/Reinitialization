@@ -12,7 +12,7 @@ from torchsummary import summary
 import time
 import os
 import json
-from torchvision import models
+#from torchvision import models
 from torchvision.models import vgg11, vgg13, vgg16, vgg19, vgg11_bn, vgg13_bn, vgg16_bn, vgg19_bn
 #TODO testar direito
 
@@ -27,11 +27,10 @@ def parse_args():
     parser.add_argument('--weight_decay', type=float, default=1e-4, help='Weight decay for optimizer')
     parser.add_argument('--reinitilization_epochs', nargs='+', type=int, default=[-1],
                         help='Epochs in which reinitilization happens')
-    parser.add_argument('--p_reinitialized', type=float, default=0)
+    parser.add_argument('--num_layers_reinitialize', type=int, default=0)
     parser.add_argument('--criterion_layer', type=str, default='random')
 
     # New arguments
-    parser.add_argument('--save_epochs', nargs='+', type=int, default=[], help='Epochs at which to save the model')
     parser.add_argument('--load_model', type=str, default='', help='Path to a saved model to load')
     parser.add_argument('--start_epoch', type=int, default=0, help='Epoch number to start training from')
     parser.add_argument('--seed', type=int, default=42, help='')
@@ -134,16 +133,20 @@ def train_vgg():
 
     model_name = args.model_name
     if model_name in model_dict:
-        model = model_dict[model_name]()
+        model = model_dict[model_name](num_classes=10)
     else:
         raise ValueError(f"Unknown model name: {model_name}")
     
     model = model.to(device)
 
     # Load external model if provided
+    loaded_epochs = 0
     if args.load_model:
         model.load_state_dict(torch.load(args.load_model))
         print(f"Loaded model from {args.load_model}")
+        match = re.search(r'epochs(\d+)', args.load_model)
+        if match:
+            loaded_epochs = int(match.group(1))
 
     score_functions = {
         'last_layers': last_layer,
@@ -152,6 +155,13 @@ def train_vgg():
     score_func = score_functions[args.criterion_layer]
 
     criterion = nn.CrossEntropyLoss()
+
+    # Load external model if provided
+    if args.load_model:
+        model.load_state_dict(torch.load(args.load_model))
+        print(f"Loaded model from {args.load_model}")
+
+    # Move optimizer initialization here, after model loading
     optimizer = optim.SGD(model.parameters(), lr=args.initial_lr, momentum=0.9, weight_decay=args.weight_decay)
 
     def lr_schedule(epoch):
@@ -168,8 +178,8 @@ def train_vgg():
         else:
             return 0.01
 
+    # Reset the learning rate scheduler
     scheduler = LambdaLR(optimizer, lr_lambda=lr_schedule, last_epoch=args.start_epoch - 1)
-
     # Create folder structure to save models
     parent_dir = './modelos'
     timestamp = time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime())
@@ -198,7 +208,7 @@ def train_vgg():
                     model,
                     layer_to_reinitizalize(
                         model,
-                        p_reinitialized=float(args.p_reinitialized),
+                        num_layers_reinitialize=float(args.num_layers_reinitialize),
                         architecture=args.model_name,
                         score_function=score_func
                     )
@@ -228,13 +238,8 @@ def train_vgg():
               f"Learning Rate: {current_lr:.6f} | "
               f"Epoch Time: {epoch_time:.2f}s | Test Time: {test_time:.2f}s")
 
-        # Save model at specified epochs
-        if epoch in args.save_epochs:
-            save_filename = os.path.join(run_dir, f'{args.model_name}_epoch{epoch + 1}_checkpoint.pth')
-            torch.save(model.state_dict(), save_filename)
-            print(f'Model saved at epoch {epoch + 1} to {save_filename}')
 
-    final_model_filename = os.path.join(run_dir, f'{args.model_name}_final_model.pth')
+    final_model_filename = os.path.join(run_dir, f'{args.model_name}_seed{args.seed}_lr{args.initial_lr}_epochs{loaded_epochs}+{args.n_epochs}_criteria{args.criterion}_final_model.pth')
     print(f'Saved final model at: {final_model_filename}')
     torch.save(model.state_dict(), final_model_filename)
 
@@ -245,7 +250,7 @@ def train_vgg():
         "history": history
     }
 
-    json_filename = f"{args.model_name}_lr{args.initial_lr}_epochs{args.n_epochs}_{timestamp}_history.json"
+    json_filename = f"{args.model_name}_seed{args.seed}_lr{args.initial_lr}_epochs{loaded_epochs}+{args.n_epochs}_criteria{args.criterion}_history.json"
     json_path = os.path.join(run_dir, json_filename)
     with open(json_path, 'w') as f:
         json.dump(history_data, f, indent=4)
@@ -262,7 +267,7 @@ def reinitialize_weights(model, layers_to_reinit):
                 nn.init.constant_(module.bias, 0)
 
         # Check if this module is a batch normalization layer we want to reinitialize
-        elif isinstance(module, nn.BatchNorm2d) and any(str(idx) in name for idx in layers_to_reinit):
+        elif isinstance(module, nn.BatchNorm2d) and name in layers_to_reinit:
             nn.init.constant_(module.weight, 1)
             nn.init.constant_(module.bias, 0)
 

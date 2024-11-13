@@ -1,15 +1,15 @@
 import torch
 from torch import nn
 import re
-from score_functions import random_score
+from score_functions import *
 
-
-def resnet_mask(model, p_reinitialized= .5, score_function=random_score):
+def resnet_mask(model, num_layers_reinitialize = 0, score_function=random_score):
      # Get all layer names as a single string
     all_layers = [(a, b) for (a, b) in model.named_modules()]
     filtered_layers = []
 
     # Use regex to find all patterns like "layer1.0", "layer1.1", etc.
+
     blocos = sorted(
         set(
             filter(
@@ -19,8 +19,11 @@ def resnet_mask(model, p_reinitialized= .5, score_function=random_score):
         )
     )
     
-    # Score and reduce the number of layers based on `p_reinitialized_layers`
-    blocos = score_function(blocos)[:int(len(blocos) * p_reinitialized)]
+    # Score and reduce the number of layers based on `[:num_layers_reinitialize]`
+    if score_function == one_layer:
+        blocos = blocos[num_layers_reinitialize*5:num_layers_reinitialize*5+5]
+    else:
+        blocos = score_function(blocos)[:num_layers_reinitialize*5]
 
     # List of allowed module types instead of string suffixes
     allowed_types = [nn.Conv2d, nn.BatchNorm2d]
@@ -37,20 +40,46 @@ def resnet_mask(model, p_reinitialized= .5, score_function=random_score):
     print(filtered_layers)
     return [x[0] for x in filtered_layers]
     
-def vgg_mask(model, p_reinitialized= .5, score_function=random_score):
+def vgg_mask(model, num_layers_reinitialize= 0, score_function=random_score):
     all_layers = [(a, b) for (a, b) in model.named_modules()]
     filtered_layers = []
 
     # Use regex to find all patterns like "features.1", "features.2", "features.14", etc.
+    allowed_types = [nn.Conv2d, nn.BatchNorm2d]
+
     blocos = sorted(
-        set(
+        list(
             filter(
-                lambda layer: re.search(r'features\.\d+', layer[0]), 
+                lambda layer: re.search(r'features\.\d+', layer[0]) and layer[1].type not in allowed_types, 
                 all_layers
             )
         )
+        ,key=lambda x: int(re.search(r'features\.(\d+)', x[0]).group(1))
     )
-    blocos = score_function(blocos)[:int(len(blocos) * p_reinitialized)]
+
+    print(blocos)
+    blocos = score_function(blocos)[:num_layers_reinitialize]
+
+    # List of allowed module types instead of string suffixes
+    aasd = [int(x[0].split('.')[1]) for x in blocos]
+    print(aasd)
+    print(sorted(aasd))
+
+    return list([x[0] for x in blocos])
+
+
+    # Filter the layers based on whether they start with `blocos` and are of an allowed type
+    filtered_layers = list(
+        filter(
+            lambda layer: any(layer[0].startswith(prefix[0]) for prefix in blocos) and
+                          isinstance(layer[1], tuple(allowed_types)),
+            all_layers
+        )
+    )
+    
+    #print(filtered_layers)
+    #return [x[0] for x in filtered_layers]
+
 
     # List of allowed module types instead of string suffixes
     allowed_types = [nn.Conv2d, nn.BatchNorm2d]
@@ -67,7 +96,8 @@ def vgg_mask(model, p_reinitialized= .5, score_function=random_score):
     print(filtered_layers)
     return [x[0] for x in filtered_layers]
 
-def mobilenet_v2_mask(model, p_reinitialized= .5, score_function=random_score):    
+
+def mobilenet_v2_mask(model, num_layers_reinitialize= 1, score_function=random_score):    
     all_layers = [(a, b) for (a, b) in model.named_modules()]
     filtered_layers = []
 
@@ -87,7 +117,7 @@ def mobilenet_v2_mask(model, p_reinitialized= .5, score_function=random_score):
         key=layer_key
     )
     print(blocos)
-    blocos = score_function(blocos)[:int(len(blocos) * p_reinitialized)]
+    blocos = score_function(blocos)[:num_layers_reinitialize]
     print(blocos)
 
     # List of allowed module types instead of string suffixes
@@ -105,14 +135,13 @@ def mobilenet_v2_mask(model, p_reinitialized= .5, score_function=random_score):
     print(filtered_layers)
     return [x[0] for x in filtered_layers]
 
-
-def layer_to_reinitizalize(model, p_reinitialized= .5, architecture="resnet20", score_function=random_score):
+def layer_to_reinitizalize(model, num_layers_reinitialize = 0, architecture="resnet20", score_function=random_score):
     if architecture.startswith("resnet"):
-        return resnet_mask(model, p_reinitialized, score_function)
-    elif architecture == 'vgg':
-        return vgg_mask(model, p_reinitialized, score_function)
+        return resnet_mask(model, num_layers_reinitialize, score_function)
+    elif architecture.startswith("vgg"):
+        return vgg_mask(model, num_layers_reinitialize, score_function)
     elif architecture == 'mobilenet_v2':
-        return mobilenet_v2_mask(model, p_reinitialized, score_function)
+        return mobilenet_v2_mask(model, num_layers_reinitialize, score_function)
     else:
         pass
 
