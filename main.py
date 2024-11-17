@@ -37,8 +37,8 @@ def parse_args():
     parser.add_argument('--save_probes', action='store_true', help='Whether to save the probes')
     parser.add_argument('--probes_dir', type=str, default='saved_probes', help='Directory to save probes')
     parser.add_argument('--keep_ratio', type=float, default=0.0, help='Ratio of weights to keep during reinitialization (0.0 to 1.0)') 
-    return parser.parse_args()
-    
+
+    return parser.parse_args()    
 
 transform_train = transforms.Compose([
     transforms.RandomHorizontalFlip(),
@@ -135,22 +135,23 @@ def train_resnets():
         match = re.search(r'epochs(\d+)', args.load_model) #????
         if match:
             loaded_epochs = int(match.group(1))
-
-        initial_test_loss, initial_test_acc = test(model, device, testloader, criterion)
+        initial_test_loss, initial_test_acc = test(model, device, testloader, nn.CrossEntropyLoss())
         print(f"\nInitial Model Performance:")
         print(f"Test Accuracy: {initial_test_acc:.2f}%")
         print(f"Test Loss: {initial_test_loss:.4f}\n")
+        
 
     score_functions = {
         'last_layers': last_layer,
         'random': random_score,
         "tunnel": last_layer,
-        "one_layer": one_layer
+        "one_layer": one_layer,
     }
     score_func = score_functions[args.criterion_layer]
 
     if args.criterion_layer == 'tunnel':
-        probing_results = probe_model(model, save_probes=args.save_probes, probes_dir=args.probes_dir)        threshold = 0.95 * max(probing_results.values()) #ou probing_results.values()[-1] ???
+        probing_results = probe_model(model, save_probes=args.save_probes, probes_dir=args.probes_dir)
+        threshold = 0.95 * max(probing_results.values()) #ou probing_results.values()[-1] ???
         layers_ordered = sorted(probing_results.keys(), key=lambda x: probing_results[x], reverse=True)
         first_above = [i for i, layer in enumerate(layers_ordered) if probing_results[layer] >= threshold][0]
         args.num_layers_reinitialize = len(layers_ordered) - first_above
@@ -178,8 +179,10 @@ def train_resnets():
     # Create folder structure to save models
     parent_dir = './modelos'
     timestamp = time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime())
-    run_dir = os.path.join(parent_dir, f'{args.model_name}_lr{args.initial_lr}_epochs{args.n_epochs}_{timestamp}')
+    dir_name = f"{args.model_name}_seed{args.seed}_lr{args.initial_lr}_epochs{loaded_epochs}+{args.n_epochs}_criteria{args.criterion_layer}_timestamp{timestamp}"
+    run_dir = os.path.join(parent_dir, dir_name)
     
+
     os.makedirs(run_dir, exist_ok=True)
     print(f"Models will be saved in: {run_dir}")
 
@@ -236,11 +239,11 @@ def train_resnets():
 
         # Save model at specified epochs
         if epoch in args.save_epochs:
-            save_filename = os.path.join(run_dir, f'{args.model_name}_seed{args.seed}_lr{args.initial_lr}_epochs+{loaded_epochs}+{args.n_epochs}_{timestamp}_criteria{args.criterion_layer}_epoch{epoch + 1}_checkpoint.pth')
+            save_filename = os.path.join(run_dir, dir_name+'_checkpoint.pth')
             torch.save(model.state_dict(), save_filename)
             print(f'Model saved at epoch {epoch + 1} to {save_filename}')
 
-    final_model_filename = os.path.join(run_dir, f'{args.model_name}_seed{args.seed}_lr{args.initial_lr}_epochs{loaded_epochs}+{args.n_epochs}_criteria{args.criterion_layer}_final_model.pth')
+    final_model_filename = os.path.join(run_dir, dir_name+'_final_model.pth')
     print(f'Saved final model at: {final_model_filename}')
     torch.save(model.state_dict(), final_model_filename)
 
@@ -251,7 +254,8 @@ def train_resnets():
         "history": history
     }
 
-    json_filename = f"{args.model_name}_seed{args.seed}_lr{args.initial_lr}_epochs{loaded_epochs}+{args.n_epochs}_criteria{args.criterion_layer}_history.json"
+    json_filename = dir_name+"_history.json"
+    
     json_path = os.path.join(run_dir, json_filename)
     with open(json_path, 'w') as f:
         json.dump(history_data, f, indent=4)
