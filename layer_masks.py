@@ -39,13 +39,13 @@ def resnet_mask(model, num_layers_reinitialize = 0, score_function=random_score)
     # Filter the layers based on whether they start with `blocos` and are of an allowed type
     filtered_layers = list(
         filter(
-            lambda layer: any(layer[0].startswith(prefix[0]) for prefix in blocos) and
+            lambda layer: any(str(prefix[0][0]) in str(layer[0]) for prefix in blocos) and
                           isinstance(layer[1], tuple(allowed_types)),
             all_layers
         )
     )
     
-    print(filtered_layers)
+    print(f"filtered layers: {filtered_layers}")
     return [x[0] for x in filtered_layers]
     
 def vgg_mask(model, num_layers_reinitialize= 0, score_function=random_score):
