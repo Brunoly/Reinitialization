@@ -7,23 +7,31 @@ def resnet_mask(model, num_layers_reinitialize = 0, score_function=random_score)
      # Get all layer names as a single string
     all_layers = [(a, b) for (a, b) in model.named_modules()]
     filtered_layers = []
-
+    print('all layers:')
+    print(all_layers)
     # Use regex to find all patterns like "layer1.0", "layer1.1", etc.
+    layer_blocks = []
+    current_block = []
+    current_pattern = None
 
-    blocos = sorted(
-        set(
-            filter(
-                lambda layer: re.search(r'layer\d+\.\d+\.', layer[0]), 
-                all_layers
-            )
-        )
-    )
-    
-    # Score and reduce the number of layers based on `[:num_layers_reinitialize]`
+    for layer in all_layers:
+        match = re.search(r'layer(\d+)\.(\d+)', layer[0])
+        if match:
+            pattern = f"layer{match.group(1)}.{match.group(2)}"
+            if pattern != current_pattern:
+                if current_block:
+                    layer_blocks.append(current_block)
+                current_block = []
+                current_pattern = pattern
+            current_block.append(layer)
+
+    if current_block:
+        layer_blocks.append(current_block)
+
     if score_function == one_layer:
-        blocos = blocos[num_layers_reinitialize*5:num_layers_reinitialize*5+5]
+        blocos = layer_blocks[num_layers_reinitialize-1:num_layers_reinitialize]
     else:
-        blocos = score_function(blocos)[:num_layers_reinitialize*5]
+        blocos = score_function(layer_blocks)[:num_layers_reinitialize]
 
     # List of allowed module types instead of string suffixes
     allowed_types = [nn.Conv2d, nn.BatchNorm2d]
