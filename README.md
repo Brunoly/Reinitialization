@@ -1,1 +1,2 @@
-Código em progresso de Pesquisa sobre Reinicialização de layer como método de regularização
+Código em progresso de Pesquisa sobre Reinicialização de layerscomo método de regularização
+
